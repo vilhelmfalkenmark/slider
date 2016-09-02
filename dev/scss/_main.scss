@@ -1,21 +1,28 @@
-.container {
-}
+$orange: rgb(251,133,0);
+$green: rgb(113,178,59);
 .slider-container {
   max-width: 1200px;
   width: 100%;
   margin: 0 auto;
-  height: 500px;
   text-align: center;
-  background-color: gray;
+  background-color: $orange;
+}
+
+
+
+.section-header {
+  color: white;
+  font-size: 50px;
+  padding-top: 50px;
 }
 
 .slider-line-container {
-  margin-top: 100px;
+  margin-top: 120px;
 }
 .min-value, .max-value {
   position: absolute;
   top: -20px;
-  height: 50px;
+  height: 40px;
   width: 40px;
 }
 .min-value {
@@ -23,7 +30,7 @@
   &:after {
     height: 100%;
     width: 3px;
-    background-color: black;
+    background-color: white;
     position: absolute;
     content: "";
     right: 0;
@@ -35,43 +42,111 @@
   &:after {
     height: 100%;
     width: 3px;
-    background-color: black;
+    background-color: white;
     position: absolute;
     content: "";
     left: 0;
   }
 }
-// .value-line {
-//   width: 4px;
-//   height: 50px;
-//   background-color: black;
-// }
 
 
+///////////////////////////////////////////////
+//////////// ITEMAMOUNT CONTAINER
+///////////////////////////////////////////////
+.itemamount-container {
+height: 60px;
+// background-color: red;
 
+span {
+  font-size: 14px;
+  color: white;
+}
+
+}
+.itemamount-header {
+  font-size: 30px;
+  color: white;
+  margin: 0;
+}
 
 .slider-line {
 width: 90%;
-height: 20px;
-background-color: black;
+height: 4px;
+background-color: white;
 margin: 0 auto;
 position: relative;
 }
-.slider-dragger {
+.dragger-circle-container {
 cursor: pointer;
-height: 80px;
-width: 80px;
-border-radius: 50%;
-background-color: red;
 position: absolute;
-top: -30px;
-// left: 90px;
+top: -108px;
+}
+.dragger-circle {
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  background-color: $green;
+  position: relative;
+
+
+&:before, &:after {
+  top: 50%;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+  border: solid transparent;
+  border-width: 15px;
+  margin-top: -15px;
+}
+  &:before {
+  left: -40px;
+	border-right-color: $green;
+  }
+  &:after {
+  right: -40px;
+	border-left-color: $green;
+  }
 }
 
+.dragger-sum-container {
+  color: white;
+  width: 100%;
+  padding: 8px 0;
+  margin-top: 16px;
+  border-radius: 8px;
+  background-color: $green;
+  position: relative;
+  &:before, &:after {
+  bottom: 100%;
+	left: 50%;
+	border: solid transparent;
+	content: "";
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+  border-bottom-color: $green;
+  border-width: 6px;
+  margin-left: -6px;
+  }
+}
 ///////////////////////////////////////////////
 //////////// FORM
 ///////////////////////////////////////////////
 label {
   display: block;
   margin: 15px 0 5px 0;
+}
+.submit {
+  cursor: pointer;
+  padding: 20px 90px;
+  border: none;
+  border-radius: 15px;
+  color: $orange;
+  font-size: 20px;
+  background-color: white;
+  margin-top: 140px;
+  margin-bottom: 50px;
 }

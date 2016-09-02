@@ -11,6 +11,9 @@ var line = $('[data-id="line"]');
 var sliderContainer = $('[data-id="slider-container"]')
 var sum = $('[data-id="sum"]');
 var min = 0;
+var itemamountHeader = $('[data-id="itemamount-header"]');
+var itemAmountItem = $('[data-id="itemamount-item"]');
+
 
 // VALUE FROM HIDDEN FORM
 var max = parseInt($('input[data-id="maxvalue"]').val());
@@ -41,6 +44,8 @@ var itemAmount = $('[data-id="itemamount"]'); // HTML OUTPUT FOR HOW MANY ITEMS 
       sliderContainer.bind('mousemove', function(e){
            mouseX = e.pageX - line.offset().left;
            var offsetLeft = ((mouseX-innerOffset)/line.width()*100);
+           itemAmountItem.html(item)
+
 
           //  console.log(offsetLeft);
           //  console.log(draggerPercentage);
@@ -56,7 +61,7 @@ var itemAmount = $('[data-id="itemamount"]'); // HTML OUTPUT FOR HOW MANY ITEMS 
                "left": ""
              })
              sum.html(max)
-             itemAmount.html(max/itemprice+" "+item)
+             itemamountHeader.html(max)
            }
            else if(offsetLeft < 1) {
              dragger.css({
@@ -64,7 +69,7 @@ var itemAmount = $('[data-id="itemamount"]'); // HTML OUTPUT FOR HOW MANY ITEMS 
                "left": "0"
              })
              sum.html(min)
-             itemAmount.html(min+" "+item)
+             itemamountHeader.html(min)
            }
            else {
              dragger.css({
@@ -75,7 +80,7 @@ var itemAmount = $('[data-id="itemamount"]'); // HTML OUTPUT FOR HOW MANY ITEMS 
             var outputValue = (sumValue*ratio).toFixed(0);
             if(outputValue % interval == 0 ) {
               sum.html(outputValue)
-              itemAmount.html(outputValue/itemprice+" "+item)
+              itemamountHeader.html(outputValue/itemprice)
             }
            }
       });

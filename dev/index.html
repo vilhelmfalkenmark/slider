@@ -10,40 +10,49 @@
 </head>
 <body>
 <div class="container">
-<div class="slider-container" id="sliderContainer" data-id="slider-container">
+  <section>
 
-<h1>Summa: <span class="sum" id="sum" data-id="sum">0</span> kr</h1>
-<h2>Räcker till: <span data-id="itemamount">0</span> </h1>
+<div class="slider-container"  data-id="slider-container">
+<h2 class="section-header">Vad räcker pengarna till?</h2>
 
 <div class="slider-line-container" >
-  <div class="slider-line" id="line" data-id="line">
+  <div class="slider-line" data-id="line">
     <div class="min-value">
-      <span>0</span>
+      <!-- <span>0</span> -->
     </div>
-    <div class="slider-dragger" id="dragger" data-id="dragger"></div>
+    <div class="dragger-circle-container" data-id="dragger">
+      <div class="itemamount-container">
+        <h3 class="itemamount-header" data-id="itemamount-header"></h3>
+        <span data-id="itemamount-item"></span>
+      </div>
+
+      <div class="dragger-circle"></div>
+      <div class="dragger-sum-container"><span data-id="sum">0</span><span> Kr</span></div>
+
+    </div>
     <div class="max-value">
-      <span>100</span>
+      <!-- <span>100</span> -->
     </div>
   </div>
 </div>
-</div>
+
 <form>
-  <label for="item">Vad ska säljas</label>
-  <input type="text" name="item" value="Måltider" data-id="item" />
+  <!-- <label for="item">Vad ska säljas</label> -->
+  <input type="hidden" name="item" value="Varma måltider" data-id="item" />
+  <!-- <label for="interval">Intervall</label> -->
+  <input type="hidden" name="interval"  value="4" data-id="interval" />
+  <!-- <label for="itemprice">Pris per st</label> -->
+  <input type="hidden" name="itemprice" value="20" data-id="itemprice"/>
+  <!-- <label for="maxvalue">Maxvärde</label> -->
+  <input type="hidden" name="maxvalue" value="2000" data-id="maxvalue"/>
 
-  <label for="interval">Intervall</label>
-  <input type="number" name="interval"  value="4" data-id="interval" />
+  <input type="hidden" name="donate" value="" data-id="donate"/>
 
-  <label for="itemprice">Pris per st</label>
-  <input type="number" name="itemprice" value="20" data-id="itemprice"/>
-
-  <label for="maxvalue">Maxvärde</label>
-  <input type="number" name="maxvalue" value="2000" data-id="maxvalue"/>
-
-  <input type="submit" value="Donera"/>
+  <input type="submit" value="Bli månadsgivare" class="submit"/>
 
 </form>
-
+</div>
+</section>
 </div>
 
 
