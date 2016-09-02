@@ -80,8 +80,10 @@ position: relative;
 cursor: pointer;
 position: absolute;
 top: -108px;
+width: 150px;
 }
 .dragger-circle {
+  margin: 0 auto;
   height: 100px;
   width: 100px;
   border-radius: 50%;

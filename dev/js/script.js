@@ -1,30 +1,26 @@
 $( document ).ready(function() {
 ///////////////////////////////////////////////
-//////////// GET VALUES FROM FORM
-///////////////////////////////////////////////
-
-///////////////////////////////////////////////
 //////////// DEFINE VALUES AND GET DOM
 ///////////////////////////////////////////////
 var dragger = $('[data-id="dragger"]');
+var draggerCircle = $('[data-id="dragger-circle"]');
 var line = $('[data-id="line"]');
 var sliderContainer = $('[data-id="slider-container"]')
 var sum = $('[data-id="sum"]');
 var min = 0;
 var itemamountHeader = $('[data-id="itemamount-header"]');
 var itemAmountItem = $('[data-id="itemamount-item"]');
-
-
-// VALUE FROM HIDDEN FORM
+var donate = $('[data-id="donate"]');
+///////////////////////////////////////////////
+//////////// GET VALUES FROM FORM
+///////////////////////////////////////////////
 var max = parseInt($('input[data-id="maxvalue"]').val());
 var interval = parseInt($('input[data-id="interval"]').val());
 var item = $('input[data-id="item"]').val();
 var itemprice = parseInt($('input[data-id="itemprice"]').val());
-
 var itemAmount = $('[data-id="itemamount"]'); // HTML OUTPUT FOR HOW MANY ITEMS THE DONATED SUM CAN BUY
-
-
-
+  itemamountHeader.html(min);
+  itemAmountItem.html(item);
   ///////////////////////////////////////////////
   //////////// MOUSEDOWN
   ///////////////////////////////////////////////
@@ -37,7 +33,6 @@ var itemAmount = $('[data-id="itemamount"]'); // HTML OUTPUT FOR HOW MANY ITEMS 
     var innerOffset = mouseX - $(this).position().left;
     var ratio = max/100;
     var sumValue;
-
       ///////////////////////////////////////////////
       //////////// MOUSEMOVE
       ///////////////////////////////////////////////
@@ -45,13 +40,7 @@ var itemAmount = $('[data-id="itemamount"]'); // HTML OUTPUT FOR HOW MANY ITEMS 
            mouseX = e.pageX - line.offset().left;
            var offsetLeft = ((mouseX-innerOffset)/line.width()*100);
            itemAmountItem.html(item)
-
-
-          //  console.log(offsetLeft);
-          //  console.log(draggerPercentage);
            sumValue = offsetLeft+(draggerPercentage/2);
-
-
            ///////////////////////////////////////////////
            //////////// CSS AND HTML
            ///////////////////////////////////////////////
@@ -60,35 +49,37 @@ var itemAmount = $('[data-id="itemamount"]'); // HTML OUTPUT FOR HOW MANY ITEMS 
                "right":"0",
                "left": ""
              })
+             itemamountHeader.html(max/itemprice)
              sum.html(max)
-             itemamountHeader.html(max)
+             donate.val(max)
            }
            else if(offsetLeft < 1) {
              dragger.css({
                "right":"",
                "left": "0"
              })
-             sum.html(min)
              itemamountHeader.html(min)
+             sum.html(min)
+             donate.val(min)
            }
            else {
              dragger.css({
                "right":"",
                "left": offsetLeft+"%"
              })
-
             var outputValue = (sumValue*ratio).toFixed(0);
-            if(outputValue % interval == 0 ) {
-              sum.html(outputValue)
+            if(outputValue % interval < 2) {
               itemamountHeader.html(outputValue/itemprice)
+              sum.html(outputValue)
+              donate.val(outputValue)
             }
            }
       });
   });
-
-
+  ///////////////////////////////////////////////
+  //////////// UNBIND MOUSEEVENTS
+  ///////////////////////////////////////////////
   sliderContainer.bind('mouseup',function(){
-    console.log("Nu är musen uppe");
       sliderContainer.unbind('mousemove');
   });
 });
