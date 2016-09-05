@@ -22,8 +22,6 @@ var item = $('input[data-id="item"]').val();
 var itemprice = parseInt($('input[data-id="itemprice"]').val());
 var itemAmount = $('[data-id="itemamount"]'); // HTML OUTPUT FOR HOW MANY ITEMS THE DONATED SUM CAN BUY
 
-
-
   itemamountHeader.html(minDonate);
   itemAmountItem.html(item);
   ///////////////////////////////////////////////
@@ -32,53 +30,23 @@ var itemAmount = $('[data-id="itemamount"]'); // HTML OUTPUT FOR HOW MANY ITEMS 
   dragger.bind('mousedown', function(e){
     var draggerWidth = dragger.width()
     var lineWidth = line.width();
-    var mouseX = e.pageX - line.offset().left; // MUSENS X VÄRDE I FÖRHÅLLANDE TILL LINJEN
+    var mouseX = e.pageX - line.offset().left; // THE MOUSE X-VALUE IN RELATION TO THE LINE
+    var max = (1-(draggerWidth/lineWidth))*100;
     var draggerPercentage = ((draggerWidth/lineWidth)*100).toFixed(0);
     draggerPercentage = parseInt(draggerPercentage);
     var innerOffset = mouseX - $(this).position().left;
-    // var ratio = maxDonate/100;
     var sumValue;
       ///////////////////////////////////////////////
       //////////// MOUSEMOVE
       ///////////////////////////////////////////////
       sliderContainer.bind('mousemove', function(e){
            mouseX = e.pageX - line.offset().left;
-           var offsetLeft = ((mouseX-innerOffset)/line.width()*100);
+           let offsetLeft = ((mouseX-innerOffset)/line.width()*100);
            itemAmountItem.html(item)
-           sumValue = offsetLeft+(draggerPercentage/2);
-           ///////////////////////////////////////////////
-           //////////// CSS AND HTML
-           ///////////////////////////////////////////////
-           if((offsetLeft + draggerPercentage) >= 99) {
-             dragger.css({
-               "right":"0",
-               "left": ""
-             })
-             itemamountHeader.html(maxDonate/itemprice)
-             sum.html(maxDonate)
-             donate.val(maxDonate)
-           }
-           else if(offsetLeft < 1) {
-             dragger.css({
-               "right":"",
-               "left": "0"
-             })
-             itemamountHeader.html(minDonate)
-             sum.html(minDonate)
-             donate.val(minDonate)
-           }
-           else {
-             dragger.css({
-               "right":"",
-               "left": offsetLeft+"%"
-             })
-            var outputValue = (sumValue*priceRatio).toFixed(0);
-            if(outputValue % interval < 2) {
-              itemamountHeader.html(outputValue/itemprice)
-              sum.html(outputValue)
-              donate.val(outputValue)
-            }
-           }
+           sumValue = offsetLeft+(draggerPercentage/2); // How far percentagewise the dragger is on the line
+
+          let donateSum = (sumValue*priceRatio).toFixed(0);
+           update(offsetLeft,max,donateSum,"%")
       });
   });
   ///////////////////////////////////////////////
@@ -99,37 +67,83 @@ var itemAmount = $('[data-id="itemamount"]'); // HTML OUTPUT FOR HOW MANY ITEMS 
     var percentage;
     var lineLeft = line.offset().left;
 
+    // dragger.on('touchmove', dragger, function(e) {
+    //   e.preventDefault();
+    //     var xPos = e.originalEvent.touches[0].pageX;
+    //     let offsetLeft = xPos - 70; // CENTER OF GREEN CIRCLE
+    //     percentage = (($(this).offset().left - lineLeft)/diff)*100;
+    //     var donateSum = (percentage*priceRatio).toFixed(0);
+    //     update(offsetLeft,max,donateSum,"px")
+    //   });
+
     dragger.on('touchmove', dragger, function(e) {
-      e.preventDefault();
-        var xPos = e.originalEvent.touches[0].pageX;
-        var left = xPos - 70; // CENTER OF GREEN CIRCLE
-        percentage = (($(this).offset().left - lineLeft)/diff)*100;
-        var outputValue = (percentage*priceRatio).toFixed(0);
-        if(outputValue<0) {
-          outputValue = 0;
-        }
+  e.preventDefault();
+    var xPos = e.originalEvent.touches[0].pageX;
+    var left = xPos - 70; // CENTER OF GREEN CIRCLE
+    percentage = (($(this).offset().left - lineLeft)/diff)*100;
+    var outputValue = (percentage*priceRatio).toFixed(0);
+    if(outputValue<0) {
+      outputValue = 0;
+    }
 
 
-        if(left >= max) {
-          dragger.css("left",max+"px")
-          itemamountHeader.html(maxDonate/itemprice)
-          sum.html(maxDonate)
-          donate.val(maxDonate)
+    if(left >= max) {
+      dragger.css("left",max+"px")
+      itemamountHeader.html(maxDonate/itemprice)
+      sum.html(maxDonate)
+      donate.val(maxDonate)
 
-        }
-        else if(left <= 0) {
-          itemamountHeader.html(minDonate)
-          sum.html(minDonate)
-          donate.val(minDonate)
-          dragger.css("left","0px")
+    }
+    else if(left <= 0) {
+      itemamountHeader.html(minDonate)
+      sum.html(minDonate)
+      donate.val(minDonate)
+      dragger.css("left","0px")
 
-        }
-        else {
-          itemamountHeader.html((outputValue/itemprice).toFixed(0));
-          sum.html(outputValue)
-          donate.val(outputValue)
-          dragger.css("left",left+"px")
-        }
-      });
+    }
+    else {
+      itemamountHeader.html((outputValue/itemprice).toFixed(0));
+      sum.html(outputValue)
+      donate.val(outputValue)
+      dragger.css("left",left+"px")
+    }
+  });
+
+  }
+  function update(left, max, donateSum,unit) {
+
+    // alert("oinwefoinw")
+
+
+    if(donateSum<0) {
+      donateSum = 0;
+    }
+    if(left >= max) { // MAX-VALUE ON THE LINE
+      itemamountHeader.html(maxDonate/itemprice)
+      sum.html(maxDonate)
+      donate.val(maxDonate)
+      dragger.css({
+           "right":"0",
+           "left": ""
+         })
+    }
+    else if(left <= 0) { // MIN-VALUE ON THE LINE
+      itemamountHeader.html(minDonate)
+      sum.html(minDonate)
+      donate.val(minDonate)
+      dragger.css({
+           "right":"",
+           "left": 0
+         })
+    }
+    else { // SOMEWHERE BETWEEN MAX AND MIN
+      itemamountHeader.html((donateSum/itemprice).toFixed(0));
+      sum.html(donateSum)
+      donate.val(donateSum)
+         dragger.css({
+           "right":"",
+           "left": left+unit
+         })
+    }
   }
 });
