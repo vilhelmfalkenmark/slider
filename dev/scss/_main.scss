@@ -1,5 +1,4 @@
-$orange: rgb(251,133,0);
-$green: rgb(113,178,59);
+
 .slider-container {
   max-width: 1200px;
   width: 100%;
@@ -7,9 +6,6 @@ $green: rgb(113,178,59);
   text-align: center;
   background-color: $orange;
 }
-
-
-
 .section-header {
   color: white;
   font-size: 50px;
@@ -79,18 +75,24 @@ position: relative;
 .dragger-circle-container {
 cursor: pointer;
 position: absolute;
-top: -108px;
-width: 150px;
+width: 90px;
+top: -88px;
+@include respond-to(desktop) {
+  top: -108px;
+  width: 150px;
+}
 }
 .dragger-circle {
   margin: 0 auto;
-  height: 100px;
-  width: 100px;
+  height: 60px;
+  width: 60px;
   border-radius: 50%;
   background-color: $green;
   position: relative;
-
-
+  @include respond-to(desktop) {
+    height: 100px;
+    width: 100px;
+  }
 &:before, &:after {
   top: 50%;
   content: " ";
@@ -99,16 +101,30 @@ width: 150px;
   position: absolute;
   pointer-events: none;
   border: solid transparent;
-  border-width: 15px;
-  margin-top: -15px;
+  border-width: 10px;
+  margin-top: -10px;
+  @include respond-to(desktop) {
+    border-width: 15px;
+    margin-top: -15px;
+  }
 }
   &:before {
-  left: -40px;
+  left: -25px;
 	border-right-color: $green;
   }
   &:after {
-  right: -40px;
+  right: -25px;
 	border-left-color: $green;
+  }
+  @include respond-to(desktop) {
+    &:before {
+    left: -40px;
+  	border-right-color: $green;
+    }
+    &:after {
+    right: -40px;
+  	border-left-color: $green;
+    }
   }
 }
 
