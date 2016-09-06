@@ -22,38 +22,6 @@ var itemprice = parseInt($('input[data-id="itemprice"]').val());
 var itemAmount = $('[data-id="itemamount"]'); // HTML OUTPUT FOR HOW MANY ITEMS THE DONATED SUM CAN BUY
   itemamountHeader.html(minDonate);
   itemAmountItem.html(item);
-    var update = function (left, max, donateSum,unit) {
-      if(donateSum<0) {
-        donateSum = 0;
-      }
-      if(left >= max) { // MAX-VALUE ON THE LINE
-        itemamountHeader.html(maxDonate/itemprice)
-        sum.html(maxDonate)
-        donate.val(maxDonate)
-        dragger.css({
-             "right":"0",
-             "left": ""
-           })
-      }
-      else if(left <= 0) { // MIN-VALUE ON THE LINE
-        itemamountHeader.html(minDonate)
-        sum.html(minDonate)
-        donate.val(minDonate)
-        dragger.css({
-             "right":"",
-             "left": 0
-           })
-      }
-      else { // SOMEWHERE BETWEEN MAX AND MIN
-        itemamountHeader.html((donateSum/itemprice).toFixed(0));
-        sum.html(donateSum)
-        donate.val(donateSum)
-           dragger.css({
-             "right":"",
-             "left": left+unit
-           })
-      }
-    }
   ///////////////////////////////////////////////
   //////////// MOUSEDOWN
   ///////////////////////////////////////////////
@@ -91,19 +59,62 @@ var itemAmount = $('[data-id="itemamount"]'); // HTML OUTPUT FOR HOW MANY ITEMS 
   if(screen.width <= 1024) {
     var screenWidth = screen.width;
      lineWidth = line.width();
-     draggerWidth = dragger.width();
-    var diff = lineWidth - draggerWidth;
+    draggerWidth = dragger.width();
+    // var diff = lineWidth - draggerWidth;
     var max = lineWidth - draggerWidth;
     var percentage;
     var lineLeft = line.offset().left;
 
-    dragger.on('touchmove', dragger, function(e) {
+    window.addEventListener("orientationchange", updateOrientation);
+    function updateOrientation(e) {
+      max = line.width() - dragger.width();
+      lineLeft = line.offset().left;
+    }
+
+    dragger.on('touchmove', $(this), function(e) {
       e.preventDefault();
         var xPos = e.originalEvent.touches[0].pageX;
-        var offsetLeft = xPos - 70; // CENTER OF GREEN CIRCLE
-        percentage = (($(this).offset().left - lineLeft)/diff)*100;
+        var offsetLeft = xPos - 75; // CENTER OF GREEN CIRCLE
+        percentage = (($(this).offset().left - lineLeft)/max)*100;
         var donateSum = (percentage*priceRatio).toFixed(0);
         update(offsetLeft,max,donateSum,"px")
       });
+  }
+  ///////////////////////////////////////////////
+  //////////// UPDATE FUNCTION
+  ///////////////////////////////////////////////
+  var donateRound;
+  var update = function (left, max, donateSum, unit) {
+    if(donateSum<0) {
+      donateSum = 0;
+    }
+    donateRound = Math.round(donateSum / interval) * interval
+    if(left >= max) { // MAX-VALUE ON THE LINE
+      itemamountHeader.html(maxDonate/itemprice)
+      sum.html(maxDonate)
+      donate.val(maxDonate)
+      dragger.css({
+           "right":"0",
+           "left": ""
+         })
+    }
+    else if(left <= 0) { // MIN-VALUE ON THE LINE
+      itemamountHeader.html(minDonate)
+      sum.html(minDonate)
+      donate.val(minDonate)
+      dragger.css({
+           "right":"",
+           "left": 0
+         })
+    }
+    else { // SOMEWHERE BETWEEN MAX AND MIN
+      itemamountHeader.html((donateRound/itemprice).toFixed(0));
+      sum.html(donateRound)
+      donate.val(donateRound)
+         dragger.css({
+           "right":"",
+           "left": left+unit
+         })
+    }
   }
 });
