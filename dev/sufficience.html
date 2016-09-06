@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Donera Stadsmissionen</title>
+    <link rel="stylesheet" href="css/stylesheet.css">
+  </head>
+  <body>
+    <div class="sufficience-container">
+      <h2 class="section-header">Vad räcker pengarna till</h2>
+      <form class="sufficience-form">
+      <input type="number" class="sufficience-donate"
+      value="1000"
+      placeholder="Belopp" 
+      data-id="sufficience-donate"/>
+      <span class="sufficience-currency">KR</span>
+      <!-- LEFT SECTION -->
+      <input type="hidden" value="25" data-id="sufficience-left-value"/>
+      <input type="hidden" value="varma måltider" data-id="sufficience-left-string"/>
+      <!-- RIGHT SECTION -->
+      <input type="hidden" value="150" data-id="sufficience-right-value"/>
+      <input type="hidden" value="nätter med nattjour" data-id="sufficience-right-string"/>
+      <div class="sufficience-example-container">
+        <!-- LEFT SECTION -->
+        <div class="sufficience-example-left">
+          <h3 class="sufficience-example-header" data-id="sufficience-example-left-value"></h3>
+          <span data-id="sufficience-example-left-string"></span>
+        </div>
+        <!-- RIGHT SECTION -->
+        <div class="sufficience-example-right">
+          <h3 class="sufficience-example-header" data-id="sufficience-example-right-value"></h3>
+          <span data-id="sufficience-example-right-string"></span>
+        </div>
+      </div>
+      <!-- SUBMIT -->
+      <input type="submit" class="sufficience-submit" value="Ge en gåva" />
+    </form>
+
+    </div>
+  </body>
+  <script src="js/jquery-2.1.4.min.js"></script>
+  <script src="js/script.js"></script>
+</html>

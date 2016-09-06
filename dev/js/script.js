@@ -64,13 +64,11 @@ var itemAmount = $('[data-id="itemamount"]'); // HTML OUTPUT FOR HOW MANY ITEMS 
     var max = lineWidth - draggerWidth;
     var percentage;
     var lineLeft = line.offset().left;
-
     window.addEventListener("orientationchange", updateOrientation);
     function updateOrientation(e) {
       max = line.width() - dragger.width();
       lineLeft = line.offset().left;
     }
-
     dragger.on('touchmove', $(this), function(e) {
       e.preventDefault();
         var xPos = e.originalEvent.touches[0].pageX;
@@ -117,4 +115,32 @@ var itemAmount = $('[data-id="itemamount"]'); // HTML OUTPUT FOR HOW MANY ITEMS 
          })
     }
   }
+///////////////////////////////////////////////
+/////// SUFFICIENCE
+///////////////////////////////////////////////
+// VALUES FROM FORM
+var sDonate = $('[data-id="sufficience-donate"]');
+var sLeftValue = $('[data-id="sufficience-left-value"]').val();
+var sLeftString = $('[data-id="sufficience-left-string"]').val();
+var sRightValue = $('[data-id="sufficience-right-value"]').val();
+var sRightString = $('[data-id="sufficience-right-string"]').val();
+// DOM
+var sExampleLeftValue = $('[data-id="sufficience-example-left-value"]');
+var sExampleLeftString = $('[data-id="sufficience-example-left-string"]');
+var sExampleRightValue = $('[data-id="sufficience-example-right-value"]');
+var sExampleRightString = $('[data-id="sufficience-example-right-string"]');
+
+sExampleLeftString.html(sLeftString)
+sExampleRightString.html(sRightString)
+
+var number;
+sDonate.on("input",function(e) {
+number = e.target.value;
+updateSufficience(number)
+});
+function updateSufficience(sum) {
+sExampleLeftValue.html(Math.floor(sum/sLeftValue));
+sExampleRightValue.html(Math.floor(sum/sRightValue));
+}
+updateSufficience(sDonate.val());
 });
