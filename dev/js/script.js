@@ -3,7 +3,6 @@ $( document ).ready(function() {
 //////////// DEFINE VALUES AND GET DOM
 ///////////////////////////////////////////////
 var dragger = $('[data-id="dragger"]');
-var draggerCircle = $('[data-id="dragger-circle"]');
 var line = $('[data-id="line"]');
 var sliderContainer = $('[data-id="slider-container"]')
 var sum = $('[data-id="sum"]');
@@ -30,21 +29,28 @@ var itemAmount = $('[data-id="itemamount"]'); // HTML OUTPUT FOR HOW MANY ITEMS 
     var lineWidth = line.width();
     var mouseX = e.pageX - line.offset().left; // THE MOUSE X-VALUE IN RELATION TO THE LINE
     var max = (1-(draggerWidth/lineWidth))*100;
-    var draggerPercentage = ((draggerWidth/lineWidth)*100).toFixed(0);
-    draggerPercentage = parseInt(draggerPercentage);
     var innerOffset = mouseX - $(this).position().left;
     var sumValue;
+    //=======================================
+    //      ÄNDRAT
+    // var invers = 1/(1-(draggerPercentage/100));
+
+    var invers = 1/(1-((draggerWidth/lineWidth)));
+    itemAmountItem.html(item)
+    //=========================================
+
       ///////////////////////////////////////////////
       //////////// MOUSEMOVE
       ///////////////////////////////////////////////
       sliderContainer.bind('mousemove', function(e){
+        //=======================================
+        //      ÄNDRAT
            mouseX = e.pageX - line.offset().left;
            var offsetLeft = ((mouseX-innerOffset)/line.width()*100);
-           itemAmountItem.html(item)
-           sumValue = offsetLeft+(draggerPercentage/2); // How far percentagewise the dragger is on the line
-
-          var donateSum = (sumValue*priceRatio).toFixed(0);
+           var donateSum = (invers * offsetLeft * priceRatio).toFixed(0);
            update(offsetLeft,max,donateSum,"%")
+        //=========================================
+
       });
   });
   ///////////////////////////////////////////////
@@ -83,10 +89,9 @@ var itemAmount = $('[data-id="itemamount"]'); // HTML OUTPUT FOR HOW MANY ITEMS 
   ///////////////////////////////////////////////
   var donateRound;
   var update = function (left, max, donateSum, unit) {
-    if(donateSum<0) {
-      donateSum = 0;
-    }
     donateRound = Math.round(donateSum / interval) * interval
+
+
     if(left >= max) { // MAX-VALUE ON THE LINE
       itemamountHeader.html(maxDonate/itemprice)
       sum.html(maxDonate)
@@ -96,7 +101,7 @@ var itemAmount = $('[data-id="itemamount"]'); // HTML OUTPUT FOR HOW MANY ITEMS 
            "left": ""
          })
     }
-    else if(left <= 0) { // MIN-VALUE ON THE LINE
+    else if(left < 0) { // MIN-VALUE ON THE LINE
       itemamountHeader.html(minDonate)
       sum.html(minDonate)
       donate.val(minDonate)

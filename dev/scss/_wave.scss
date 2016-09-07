@@ -1,0 +1,27 @@
+.checkbox-container {
+  margin: 0 auto;
+  padding-top: 60px;
+  width: 300px;
+}
+$size:  30px;
+.wave {
+cursor: pointer;
+height:$size;
+width: $size;
+position: relative;
+outline: none;
+&:before {
+  content: "";
+  background-color: gray;
+  position: absolute;
+  height: $size;
+  width: $size;
+  border-radius: 50%;
+}
+}
+.wave:checked {
+  &:after {
+    
+
+  }
+}
