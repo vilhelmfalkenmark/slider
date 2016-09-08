@@ -36,7 +36,7 @@ var lineWidth = line.width();
     draggerWidth = dragger.width()
     lineWidth = line.width();
     var mouseX = e.pageX - line.offset().left; // THE MOUSE X-VALUE IN RELATION TO THE LINE
-    console.log(e.pageX);
+    // console.log(e.pageX);
     max = (1-(draggerWidth/lineWidth))*100;
     var innerOffset = mouseX - $(this).position().left;
     var sumValue;

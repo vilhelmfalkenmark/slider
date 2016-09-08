@@ -1,0 +1,32 @@
+$height: 90px;
+$offset: 10px;
+// $width: calc(50vw - 10px);
+$width: 50vw;
+
+.section-container {
+  height: 400px;
+  background-color: $orange;
+  width: 100%;
+  position: relative;
+  margin-bottom: $height;
+  &:before, &:after {
+    box-sizing:border-box;
+    background: transparent;
+    bottom: -$height;
+    content: '';
+    width: 50%;
+    height: $height;
+    position: absolute;
+    border-bottom: $height solid transparent;
+  }
+  &:before {
+    left: 0;
+    // border-right: calc(50vw - #{$offset}) solid $orange;
+    border-right: $width solid $orange;
+  }
+  &:after {
+    right: 0;
+    // border-left: calc(50vw - #{$offset}) solid $orange;
+    border-left: $width solid $orange;
+  }
+}
