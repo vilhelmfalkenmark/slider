@@ -10,6 +10,7 @@ var minDonate = 0;
 var itemamountHeader = $('[data-id="itemamount-header"]');
 var itemAmountItem = $('[data-id="itemamount-item"]');
 var donate = $('[data-id="donate"]');
+var initialDonate = parseInt(donate.val());
 ///////////////////////////////////////////////
 //////////// GET VALUES FROM FORM
 ///////////////////////////////////////////////
@@ -21,24 +22,29 @@ var itemprice = parseInt($('input[data-id="itemprice"]').val());
 var itemAmount = $('[data-id="itemamount"]'); // HTML OUTPUT FOR HOW MANY ITEMS THE DONATED SUM CAN BUY
   itemamountHeader.html(minDonate);
   itemAmountItem.html(item);
+/////////////////////////////////////////////////////////
+//////////// GLOBAL VARIABLES MANIPULATED ON INTERACTION
+////////////////////////////////////////////////////////
+var screenWidth = screen.width;
+var invers, max, offsetLeft, donateSum, xPos, lineLeft;
+var draggerWidth = dragger.width()
+var lineWidth = line.width();
   ///////////////////////////////////////////////
   //////////// MOUSEDOWN
   ///////////////////////////////////////////////
   dragger.bind('mousedown', function(e){
-    var draggerWidth = dragger.width()
-    var lineWidth = line.width();
+    draggerWidth = dragger.width()
+    lineWidth = line.width();
     var mouseX = e.pageX - line.offset().left; // THE MOUSE X-VALUE IN RELATION TO THE LINE
-    var max = (1-(draggerWidth/lineWidth))*100;
+    console.log(e.pageX);
+    max = (1-(draggerWidth/lineWidth))*100;
     var innerOffset = mouseX - $(this).position().left;
     var sumValue;
     //=======================================
-    //      ÄNDRAT
-    // var invers = 1/(1-(draggerPercentage/100));
-
-    var invers = 1/(1-((draggerWidth/lineWidth)));
+    // ÄNDRAT
+    invers = 1/(1-((draggerWidth/lineWidth)));
     itemAmountItem.html(item)
     //=========================================
-
       ///////////////////////////////////////////////
       //////////// MOUSEMOVE
       ///////////////////////////////////////////////
@@ -46,11 +52,10 @@ var itemAmount = $('[data-id="itemamount"]'); // HTML OUTPUT FOR HOW MANY ITEMS 
         //=======================================
         //      ÄNDRAT
            mouseX = e.pageX - line.offset().left;
-           var offsetLeft = ((mouseX-innerOffset)/line.width()*100);
-           var donateSum = (invers * offsetLeft * priceRatio).toFixed(0);
-           update(offsetLeft,max,donateSum,"%")
+           offsetLeft = ((mouseX-innerOffset)/line.width()*100);
+           donateSum = (invers * offsetLeft * priceRatio).toFixed(0);
+           update(offsetLeft,max,donateSum)
         //=========================================
-
       });
   });
   ///////////////////////////////////////////////
@@ -62,14 +67,10 @@ var itemAmount = $('[data-id="itemamount"]'); // HTML OUTPUT FOR HOW MANY ITEMS 
   ///////////////////////////////////////////////
   //////////// TABLET + PHONE
   ///////////////////////////////////////////////
-  if(screen.width <= 1024) {
-    var screenWidth = screen.width;
-     lineWidth = line.width();
-    draggerWidth = dragger.width();
-    // var diff = lineWidth - draggerWidth;
-    var max = lineWidth - draggerWidth;
-    var percentage;
-    var lineLeft = line.offset().left;
+  if(screenWidth <= 1024) {
+    max = (1-(draggerWidth/lineWidth))*100;
+    lineLeft = line.offset().left;
+    invers = 1/(1-((draggerWidth/lineWidth)));
     window.addEventListener("orientationchange", updateOrientation);
     function updateOrientation(e) {
       max = line.width() - dragger.width();
@@ -77,21 +78,25 @@ var itemAmount = $('[data-id="itemamount"]'); // HTML OUTPUT FOR HOW MANY ITEMS 
     }
     dragger.on('touchmove', $(this), function(e) {
       e.preventDefault();
-        var xPos = e.originalEvent.touches[0].pageX;
-        var offsetLeft = xPos - 75; // CENTER OF GREEN CIRCLE
-        percentage = (($(this).offset().left - lineLeft)/max)*100;
-        var donateSum = (percentage*priceRatio).toFixed(0);
-        update(offsetLeft,max,donateSum,"px")
+        xPos = e.originalEvent.touches[0].pageX - lineLeft - (draggerWidth/2);
+        offsetLeft = ((xPos)/lineWidth*100);
+        donateSum = (invers * offsetLeft * priceRatio).toFixed(0);
+        update(offsetLeft,max,donateSum)
       });
   }
+  ///////////////////////////////////////////////
+  //////////// INITIAL DONATION
+  ///////////////////////////////////////////////
+  var z = draggerWidth/lineWidth;
+  var x = (initialDonate/maxDonate)*100;
+  var y = x * (1-z);
+  update(y,((1-(z))*100),initialDonate)
   ///////////////////////////////////////////////
   //////////// UPDATE FUNCTION
   ///////////////////////////////////////////////
   var donateRound;
-  var update = function (left, max, donateSum, unit) {
-    donateRound = Math.round(donateSum / interval) * interval
-
-
+  function update(left, max, donateSum) {
+    donateRound = Math.floor(donateSum / interval) * interval
     if(left >= max) { // MAX-VALUE ON THE LINE
       itemamountHeader.html(maxDonate/itemprice)
       sum.html(maxDonate)
@@ -111,12 +116,12 @@ var itemAmount = $('[data-id="itemamount"]'); // HTML OUTPUT FOR HOW MANY ITEMS 
          })
     }
     else { // SOMEWHERE BETWEEN MAX AND MIN
-      itemamountHeader.html((donateRound/itemprice).toFixed(0));
+      itemamountHeader.html(Math.floor(donateRound/itemprice));
       sum.html(donateRound)
       donate.val(donateRound)
          dragger.css({
            "right":"",
-           "left": left+unit
+           "left": left+"%"
          })
     }
   }
