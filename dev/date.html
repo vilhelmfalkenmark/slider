@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <script type="text/javascript">
+    Date.prototype.getWeek = function() {
+    var firstJan = new Date(this.getFullYear(),0, 1);
+    var diff;
+    var firstMonday;
+    if(firstJan.getDay() != 1) { // Om den första januari inte var en måndag.
+      diff = 7 - firstJan.getDay()// Hur många dagar det är kvar till den första måndagen på året
+      firstMonday = new Date(this.getFullYear(),0, diff)
+    } else {
+      firstMonday = firstJan;
+    }
+    var week = Math.floor((((this - firstMonday) / 86400000) + firstMonday.getDay() + 1) / 7);
+    return week;
+  }
+   var weekNumber = (new Date()).getWeek();
+   console.log(weekNumber);
+
+    </script>
+  </body>
+</html>
